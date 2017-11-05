@@ -1,0 +1,101 @@
+{% include 'header/header.html' %}
+{% load staticfiles %}
+
+<h1 class="font-color">
+    肺结节检测
+</h1>
+
+<div class="home">
+    <div class="div-inline left">
+{#        TODO#}
+{#        步骤信息#}
+        <table class="table" style="text-align: center;">
+
+            <thead>
+                <tr>
+                    <th class="table-head">编号</th>
+                    <th class="table-head">z  </th>
+                    <th class="table-head">y  </th>
+                    <th class="table-head">x  </th>
+                </tr>
+            </thead>
+
+            <tbody>
+
+{#                TODO#}
+{#                for#}
+                <tr class="default-cursor" onmouseover="changeColor(this)" onmouseleave="resetColor(this)" onclick="getNodulesImage(this)">
+                    <td>1</td>
+                    <td>100</td>
+                    <td>1</td>
+                    <td>1</td>
+                </tr>
+{#                endfor#}
+
+            </tbody>
+
+        </table>
+    </div>
+
+    <div class="div-inline middle">
+{#        TODO#}
+{#        路径#}
+        <img id="ct-img" onscroll="scroll()" class="img" src="{% static "image/ct_img_0_000.jpg" %} " alt="">
+    </div>
+
+    <div class="div-inline right">
+        hello
+{#        TODO#}
+    </div>
+
+</div>
+
+<script language="JavaScript" type="text/javascript">
+    var mouseWheel = document.getElementById('ct-img');
+
+    if (mouseWheel.addEventListener) {
+
+        mouseWheel.addEventListener('DOMMouseScroll', function(event) {
+            event.target.innerHTML = event.detail;
+            event.stopPropagation();
+            event.preventDefault();
+
+        }, false);
+    }
+    mouseWheel.onmousewheel = function(event) {
+
+        event = event || window.event;
+        mouseWheel.innerHTML = event.wheelDelta.toString();
+        event.returnValue = false;
+
+        alert(event.wheelDelta);
+
+        // TODO
+        // 在这里处理 event.wheelDelta
+    }
+</script>
+
+<script language="JavaScript" type="text/javascript">
+    function scroll() {
+        alert("scroll");
+    }
+
+    function getNodulesImage(obj) {
+        var img = document.getElementById("ct-img");
+        var cnt = obj.cells[1]; //结节图片编号
+
+        // TODO
+        // 在这里修改img.src
+        alert(img.src);
+    }
+
+    function changeColor(obj) {
+        obj.style.color = "gray";
+    }
+
+    function resetColor(obj) {
+        obj.style.color = "white";
+    }
+</script>
+
+{% include 'footer/footer.html' %}

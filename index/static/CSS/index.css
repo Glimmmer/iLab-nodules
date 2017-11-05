@@ -1,0 +1,38 @@
+.font-color {
+    color: white;
+}
+
+.home {
+    width: 1200px;
+    color: white;
+}
+
+.home .div-inline{
+    display: inline-block;
+    margin: -2px;
+    vertical-align: text-top;
+}
+
+.home .div-inline .table-head{
+    width: 25%;
+}
+
+.home .left {
+    width: 20%;
+}
+
+.home .middle {
+    width: 50%;
+}
+
+.home .right {
+    width: 30%;
+}
+
+.home .img {
+    width: 100%;
+}
+
+.default-cursor {
+    cursor: default;
+}
