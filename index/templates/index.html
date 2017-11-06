@@ -22,15 +22,16 @@
 
             <tbody>
 
-{#                TODO#}
-{#                for#}
-                <tr class="default-cursor" onmouseover="changeColor(this)" onmouseleave="resetColor(this)" onclick="getNodulesImage(this)">
-                    <td>1</td>
-                    <td>100</td>
-                    <td>1</td>
-                    <td>1</td>
+                {% for foo in nodules %}
+
+                <tr class="default-cursor" onclick="getNodulesImage(this)" onmouseover="changeColor(this)" onmouseleave="resetColor(this)">
+                    <td>{{ foo.id }}</td>
+                    <td>{{ foo.z }} </td>
+                    <td>{{ foo.y }} </td>
+                    <td>{{ foo.x }} </td>
                 </tr>
-{#                endfor#}
+
+                {% endfor %}
 
             </tbody>
 
@@ -46,6 +47,8 @@
     <div class="div-inline right">
         hello
 {#        TODO#}
+
+        <p class="font-color" id="test"> hello </p>
     </div>
 
 </div>
@@ -75,18 +78,33 @@
     }
 </script>
 
-<script language="JavaScript" type="text/javascript">
-    function scroll() {
-        alert("scroll");
-    }
+<script>
 
     function getNodulesImage(obj) {
         var img = document.getElementById("ct-img");
-        var cnt = obj.cells[1]; //结节图片编号
+        var cnt = obj.cells[1].innerHTML; //结节图片编号
 
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+
+                var jsontext = xmlhttp.response;
+                var path = JSON.parse(jsontext);
+
+                img.src = "{% static "" %}" + path['path'];
+            }
+        };
         // TODO
-        // 在这里修改img.src
-        alert(img.src);
+        // 请求图片路径
+        xmlhttp.open("GET", "/ajax_dict?cnt=" + cnt, true);
+        xmlhttp.send();
     }
 
     function changeColor(obj) {

@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 from django.conf.urls import url
-from . import view
+from . import views
+from . import ajax_test
 
 urlpatterns = [
-    url(r'^$', view.index),
+    url(r'^$', views.index),
+    url(r'^ajax_list/$', ajax_test.ajax_list, name='ajax_list'),
+    url(r'^ajax_dict/$', ajax_test.ajax_dict, name='ajax_dict'),
 ]
