@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 from django.http import JsonResponse
+import os
+from settings import BASE_DIR
 
 
 def ajax_list(request):
@@ -13,6 +15,9 @@ def ajax_dict(request):
     if request.method == 'GET':
         cnt = request.GET['cnt']
         name_dict['cnt'] = cnt
-        name_dict['path'] = 'image/ct_img_0_00'+str(cnt)+'.jpg'
+        cnt = int(cnt)
+        path = os.path.join(BASE_DIR, 'index/static/image/ct_' + str(cnt) + '.png')
+        if os.path.isfile(path):
+            name_dict['path'] = 'image/ct_' + str(cnt) + '.png'
 
     return JsonResponse(name_dict)

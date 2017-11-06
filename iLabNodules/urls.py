@@ -16,9 +16,12 @@ Including another URLconf
 from django.conf.urls import url
 from . import views
 from . import ajax_test
+from . import img_proc
 
 urlpatterns = [
     url(r'^$', views.index),
     url(r'^ajax_list/$', ajax_test.ajax_list, name='ajax_list'),
     url(r'^ajax_dict/$', ajax_test.ajax_dict, name='ajax_dict'),
+    url(r'^load_img/$', img_proc.load_img, name='load_img'),
+    url(r'^load_nodules/$', img_proc.load_nodules, name='load_nodules'),
 ]

@@ -5,6 +5,9 @@
     肺结节检测
 </h1>
 
+<button onclick="loaddata()"> load data</button>
+<button onmouseleave="changeImg(0)"> refresh </button>
+
 <div class="home">
     <div class="div-inline left">
 {#        TODO#}
@@ -20,7 +23,7 @@
                 </tr>
             </thead>
 
-            <tbody>
+            <tbody id="tb">
 
                 {% for foo in nodules %}
 
@@ -43,10 +46,10 @@
 {#        路径#}
         <div class="img-block">
             <div style="text-align: center">
-                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="{% static "image/ct_img_0_001.jpg" %} " alt="">
+                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="" alt="">
             </div>
 
-            <span class="img-info-top" id="slice">se: 0</span>
+            <span class="img-info-top" id="slice"></span>
             <span class="img-info-bot-x" id="mouse-x"></span>
             <span class="img-info-bot-y" id="mouse-y"></span>
         </div>
@@ -63,8 +66,8 @@
 
 <script language="JavaScript" type="text/javascript">
     var mouseWheel = document.getElementById('ct-img');
-    var num = 1;
-    var numMax = 9;
+    var num = 0;
+    var numMax = 100;
 
     if (mouseWheel.addEventListener) {
 
@@ -82,18 +85,21 @@
         event.returnValue = false;
 
 
-        if(event.wheelDelta > 0 && num < numMax) {
-            changeImg(++num);
-        }else if(event.wheelDelta < 0 && num >= 2) {
-            changeImg(--num);
+        // 滚轮，滑动
+        if(event.wheelDelta > 0) {
+            changeImg(num + 1);
+        }else if(event.wheelDelta < 0) {
+            changeImg(num - 1);
         }
-        // TODO
-        // 在这里处理 event.wheelDelta
     }
 </script>
 
 <script>
+    window.onload = init;
 
+    function init() {
+
+    }
 
     function getCoordinates() {
         var xinfo = document.getElementById('mouse-x');
@@ -121,9 +127,14 @@
             if(xmlhttp.readyState==4 && xmlhttp.status==200) {
 
                 var jsontext = xmlhttp.response;
-                var path = JSON.parse(jsontext);
+                var path = JSON.parse(jsontext)['path'];
 
-                img.src = "{% static "" %}" + path['path'];
+                if(typeof(path) != "undefined") {
+                    path = "{% static "" %}" + path;
+                    img.src = path;
+                    document.getElementById('slice').innerHTML = "se: " + cnt;
+                    num = parseInt(cnt);
+                }
             }
         };
         // TODO
@@ -145,6 +156,81 @@
 
     function resetColor(obj) {
         obj.style.color = "white";
+    }
+
+    function loaddata() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+            }
+        };
+
+        // 请求生成图片
+        xmlhttp.open("GET", "/load_img", true);
+        xmlhttp.send();
+
+        changeImg(0);
+
+        // TODO
+        // 请求生成结节信息
+        loadnodules();
+    }
+
+    function loadnodules() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
+            xmlhttp=new XMLHttpRequest();
+        }
+        else {// code for IE6, IE5
+            xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+        }
+
+        xmlhttp.onreadystatechange = function() {
+            if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+                addNodulesList('1', '10', '1', '1');
+                addNodulesList('1', '20', '1', '1');
+                addNodulesList('1', '30', '1', '1');
+            }
+        };
+        // TODO
+        // 请求图片路径
+        xmlhttp.open("GET", "/load_nodules", true);
+        xmlhttp.send();
+    }
+
+    function addNodulesList(nid, x, y, z) {
+        var item = document.createElement('tr');
+
+        var id = document.createElement('td');
+        id.innerHTML = nid;
+
+        var cox = document.createElement('td');
+        cox.innerHTML = x;
+
+        var coy = document.createElement('td');
+        coy.innerHTML = y;
+
+        var coz = document.createElement('td');
+        coz.innerHTML = z;
+
+        item.appendChild(id);
+        item.appendChild(cox);
+        item.appendChild(coy);
+        item.appendChild(coz);
+
+        item.className = 'default-cursor';
+        item.setAttribute('onclick', 'getNodulesImage(this)');
+        item.setAttribute('onmouseover', 'changeColor(this)');
+        item.setAttribute('onmouseleave', 'resetColor(this)');
+
+        document.getElementById('tb').appendChild(item);
     }
 </script>
 
