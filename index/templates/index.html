@@ -41,7 +41,15 @@
     <div class="div-inline middle">
 {#        TODO#}
 {#        路径#}
-        <img id="ct-img" onscroll="scroll()" class="img" src="{% static "image/ct_img_0_000.jpg" %} " alt="">
+        <div class="img-block">
+            <div style="text-align: center">
+                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="{% static "image/ct_img_0_000.jpg" %} " alt="">
+            </div>
+
+            <span class="img-info-top" id="slice">se: 0</span>
+            <span class="img-info-bot-x" id="mouse-x"></span>
+            <span class="img-info-bot-y" id="mouse-y"></span>
+        </div>
     </div>
 
     <div class="div-inline right">
@@ -79,6 +87,17 @@
 </script>
 
 <script>
+
+    function getCoordinates() {
+        var xinfo = document.getElementById('mouse-x');
+        var yinfo = document.getElementById('mouse-y');
+
+        var x = event.clientX - document.getElementById('ct-img').getBoundingClientRect().left;
+        var y = event.clientY - document.getElementById('ct-img').getBoundingClientRect().top + 0.875;
+
+        xinfo.innerHTML = "x: " + x;
+        yinfo.innerHTML = "y: " + y;
+    }
 
     function getNodulesImage(obj) {
         var img = document.getElementById("ct-img");
