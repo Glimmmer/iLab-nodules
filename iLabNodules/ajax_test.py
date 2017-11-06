@@ -11,7 +11,8 @@ def ajax_list(request):
 def ajax_dict(request):
     name_dict = {'twz': 'test1', 'zqxt': 'test2'}
     if request.method == 'GET':
-        name_dict['cnt'] = request.GET['cnt']
-        name_dict['path'] = 'image/ct_img_0_002.jpg'
+        cnt = request.GET['cnt']
+        name_dict['cnt'] = cnt
+        name_dict['path'] = 'image/ct_img_0_00'+str(cnt)+'.jpg'
 
     return JsonResponse(name_dict)

@@ -43,7 +43,7 @@
 {#        路径#}
         <div class="img-block">
             <div style="text-align: center">
-                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="{% static "image/ct_img_0_000.jpg" %} " alt="">
+                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="{% static "image/ct_img_0_001.jpg" %} " alt="">
             </div>
 
             <span class="img-info-top" id="slice">se: 0</span>
@@ -63,6 +63,8 @@
 
 <script language="JavaScript" type="text/javascript">
     var mouseWheel = document.getElementById('ct-img');
+    var num = 1;
+    var numMax = 9;
 
     if (mouseWheel.addEventListener) {
 
@@ -79,8 +81,12 @@
         mouseWheel.innerHTML = event.wheelDelta.toString();
         event.returnValue = false;
 
-        alert(event.wheelDelta);
 
+        if(event.wheelDelta > 0 && num < numMax) {
+            changeImg(++num);
+        }else if(event.wheelDelta < 0 && num >= 2) {
+            changeImg(--num);
+        }
         // TODO
         // 在这里处理 event.wheelDelta
     }
@@ -88,20 +94,20 @@
 
 <script>
 
+
     function getCoordinates() {
         var xinfo = document.getElementById('mouse-x');
         var yinfo = document.getElementById('mouse-y');
 
         var x = event.clientX - document.getElementById('ct-img').getBoundingClientRect().left;
-        var y = event.clientY - document.getElementById('ct-img').getBoundingClientRect().top + 0.875;
+        var y = event.clientY - document.getElementById('ct-img').getBoundingClientRect().top;
 
-        xinfo.innerHTML = "x: " + x;
-        yinfo.innerHTML = "y: " + y;
+        xinfo.innerHTML = "x: " + Math.round(x);
+        yinfo.innerHTML = "y: " + Math.round(y);
     }
 
-    function getNodulesImage(obj) {
+    function changeImg(cnt){
         var img = document.getElementById("ct-img");
-        var cnt = obj.cells[1].innerHTML; //结节图片编号
 
         var xmlhttp;
         if (window.XMLHttpRequest) {// code for IE7+, Firefox, Chrome, Opera, Safari
@@ -124,6 +130,13 @@
         // 请求图片路径
         xmlhttp.open("GET", "/ajax_dict?cnt=" + cnt, true);
         xmlhttp.send();
+    }
+
+    function getNodulesImage(obj) {
+        var img = document.getElementById("ct-img");
+        var cnt = obj.cells[1].innerHTML; //结节图片编号
+
+        changeImg(cnt);
     }
 
     function changeColor(obj) {
