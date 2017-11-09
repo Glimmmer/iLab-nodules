@@ -12,6 +12,10 @@
     <div class="div-inline left">
 {#        TODO#}
 {#        步骤信息#}
+        <select id="mhd" onclick="selectMhd()">
+            <option value ="1.3.6.1.4.1.14519.5.2.1.6279.6001.100225287222365663678666836860.mhd">test example</option>
+            <option value ="fuck.mhd">test2</option>
+        </select>
         <table class="table" style="text-align: center;">
 
             <thead>
@@ -98,7 +102,7 @@
     window.onload = init;
 
     function init() {
-
+        changeImg(0);
     }
 
     function getCoordinates() {
@@ -139,7 +143,7 @@
         };
         // TODO
         // 请求图片路径
-        xmlhttp.open("GET", "/ajax_dict?cnt=" + cnt, true);
+        xmlhttp.open("GET", "/ajax_dict?cnt=" + cnt + "&value=" + document.getElementById('mhd').value, true);
         xmlhttp.send();
     }
 
@@ -173,6 +177,7 @@
         };
 
         // 请求生成图片
+        // 这里把mhd文件名传进去，加载指定的mhd文件
         xmlhttp.open("GET", "/load_img", true);
         xmlhttp.send();
 
@@ -194,6 +199,7 @@
 
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.readyState==4 && xmlhttp.status==200) {
+                document.getElementById('tb').innerHTML = "";
                 addNodulesList('1', '10', '1', '1');
                 addNodulesList('1', '20', '1', '1');
                 addNodulesList('1', '30', '1', '1');
@@ -231,6 +237,10 @@
         item.setAttribute('onmouseleave', 'resetColor(this)');
 
         document.getElementById('tb').appendChild(item);
+    }
+
+    function selectMhd(){
+        alert(document.getElementById('mhd').value);
     }
 </script>
 

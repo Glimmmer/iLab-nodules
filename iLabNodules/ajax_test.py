@@ -11,13 +11,17 @@ def ajax_list(request):
 
 
 def ajax_dict(request):
-    name_dict = {'twz': 'test1', 'zqxt': 'test2'}
+    res_json = {}
     if request.method == 'GET':
         cnt = request.GET['cnt']
-        name_dict['cnt'] = cnt
+        res_json['cnt'] = cnt
         cnt = int(cnt)
-        path = os.path.join(BASE_DIR, 'index/static/image/ct_' + str(cnt) + '.png')
-        if os.path.isfile(path):
-            name_dict['path'] = 'image/ct_' + str(cnt) + '.png'
+        mhd = request.GET['value']
+        if mhd:
+            mhd = mhd[:-4]
+            path = os.path.join(BASE_DIR, 'index/static/image/' + mhd + '/ct_' + str(cnt) + '.png')
+            print(path)
+            if os.path.isfile(path):
+                res_json['path'] = 'image/' + mhd + '/ct_' + str(cnt) + '.png'
 
-    return JsonResponse(name_dict)
+    return JsonResponse(res_json)
