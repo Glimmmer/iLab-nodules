@@ -8,10 +8,10 @@
 <button onclick="loaddata()"> load data</button>
 <button onmouseleave="changeImg(0)"> refresh </button>
 
-<form id="upload-form" action="/upload/" method="post" enctype="multipart/form-data"">
+<form id="upload-form" method="post" enctype="multipart/form-data">
      {% csrf_token %}
-　　　<input type="file" id="upload" name="upload" /> <br />
-　　　<input type="submit" value="upload"/>
+　　　<input class="font-color" type="file" id="upload" name="upload" /> <br />
+　　　<button id="upload-btn" type="button" onclick="test()">upload</button>
 </form>
 
 <div class="home">
@@ -73,6 +73,36 @@
     </div>
 
 </div>
+
+
+
+
+
+<script language="JavaScript" type="text/javascript">
+    function test() {
+        $.ajax({
+            url: '/upload/',
+            type: 'POST',
+            cache: false,
+            data: new FormData($('#upload-form')[0]),
+            processData: false,
+            contentType: false,
+            success: function{
+                alert("Data Upload Suc!");
+            }
+        })
+                .done(function(res) {
+        })
+                .fail(function(res) {});
+    }
+
+</script>
+
+
+
+
+
+
 
 <script language="JavaScript" type="text/javascript">
     var mouseWheel = document.getElementById('ct-img');
