@@ -15,8 +15,10 @@ Including another URLconf
 """
 from django.conf.urls import url
 from . import views
-from . import ajax_test
-from . import img_proc
+from data_proc import ajax_test
+from data_proc import upload
+from data_proc import img_proc
+
 
 urlpatterns = [
     url(r'^$', views.index),
@@ -24,4 +26,5 @@ urlpatterns = [
     url(r'^ajax_dict/$', ajax_test.ajax_dict, name='ajax_dict'),
     url(r'^load_img/$', img_proc.load_img, name='load_img'),
     url(r'^load_nodules/$', img_proc.load_nodules, name='load_nodules'),
+    url(r'^upload/$', upload.upload, name='upload'),
 ]

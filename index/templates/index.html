@@ -8,6 +8,12 @@
 <button onclick="loaddata()"> load data</button>
 <button onmouseleave="changeImg(0)"> refresh </button>
 
+<form id="upload-form" action="/upload/" method="post" enctype="multipart/form-data"">
+     {% csrf_token %}
+　　　<input type="file" id="upload" name="upload" /> <br />
+　　　<input type="submit" value="upload"/>
+</form>
+
 <div class="home">
     <div class="div-inline left">
 {#        TODO#}
@@ -239,8 +245,12 @@
         document.getElementById('tb').appendChild(item);
     }
 
-    function selectMhd(){
+    function selectMhd() {
         alert(document.getElementById('mhd').value);
+    }
+
+    function loadMhd() {
+        alert("fuck u");
     }
 </script>
 
