@@ -1,28 +1,47 @@
 {% include 'header/header.html' %}
 {% load staticfiles %}
 
-<h1 class="font-color">
-    肺结节检测
-</h1>
-
-<button onclick="loaddata()"> load data</button>
-<button onmouseleave="changeImg(0)"> refresh </button>
-
-<form id="upload-form" method="post" enctype="multipart/form-data">
-     {% csrf_token %}
-　　　<input class="font-color" type="file" id="upload" name="upload" /> <br />
-　　　<button id="upload-btn" type="button" onclick="test()">upload</button>
-</form>
+{#<form id="upload-form" method="post" enctype="multipart/form-data">#}
+{#     {% csrf_token %}#}
+{#　　　<input class="font-color" type="file" id="upload" name="upload" /> <br />#}
+{#　　　<button id="upload-btn" type="button" onclick="test()">upload</button>#}
+{#</form>#}
 
 <div class="home">
-    <div class="div-inline left">
+    <div class="div-inline left" style="margin-left: 40px;">
 {#        TODO#}
 {#        步骤信息#}
-        <select id="mhd" onclick="selectMhd()">
-            <option value ="1.3.6.1.4.1.14519.5.2.1.6279.6001.100225287222365663678666836860.mhd">test example</option>
-            <option value ="fuck.mhd">test2</option>
+        <h1 class="font-color" style="margin-top: 0px;">
+            肺结节检测
+        </h1>
+
+
+        <select id="mhd" onclick="selectMhd()" class="button button-rounded button-small" style="margin-bottom: 10px; width: 95.5%; font-size: medium;">
+            <option value ="1.3.6.1.4.1.14519.5.2.1.6279.6001.100225287222365663678666836860.mhd">example.0-6860</option>
+            <option value ="1.3.6.1.4.1.14519.5.2.1.6279.6001.100621383016233746780170740405.mhd">example.1-0405</option>
+            <option value ="1.3.6.1.4.1.14519.5.2.1.6279.6001.102133688497886810253331438797.mhd">example.2-8797</option>
         </select>
-        <table class="table" style="text-align: center;">
+
+        <br>
+
+        <button onclick="loaddata()" class="button button-rounded button-small" style="font-size: medium;"> load data</button>
+        <button onclick="changeImg(0)" class="button button-rounded button-small" style="font-size: medium;"> refresh </button>
+
+        <h2 style="margin-top: 10px; ">步骤向导</h2>
+
+        <ul style="padding-left: 0px; ">
+            <li>步骤一：步骤待确定步骤待确定</li>
+            <hr style="border: 0; border-top:2px dashed gray;"/>
+            <li>步骤二：步骤待确定步骤待确定</li>
+            <hr style="border: 0; border-top:2px dashed gray;"/>
+            <li>步骤三：步骤待确定步骤待确定</li>
+            <hr style="border: 0; border-top:2px dashed gray;"/>
+        </ul>
+
+    <div style="height: 1px;"></div>
+
+    <h2>可疑结节</h2>
+        <table class="table" style="text-align: left; width: 100%">
 
             <thead>
                 <tr>
@@ -30,6 +49,21 @@
                     <th class="table-head">z  </th>
                     <th class="table-head">y  </th>
                     <th class="table-head">x  </th>
+                </tr>
+            </thead>
+
+        </table>
+
+        <div style="overflow: auto; height: 140px;">
+
+        <table class="table" style="text-align: left; width: 100%">
+
+            <thead>
+                <tr>
+                    <th class="table-head"></th>
+                    <th class="table-head"></th>
+                    <th class="table-head"></th>
+                    <th class="table-head"></th>
                 </tr>
             </thead>
 
@@ -48,7 +82,9 @@
 
             </tbody>
 
+
         </table>
+        </div>
     </div>
 
     <div class="div-inline middle">
@@ -56,20 +92,29 @@
 {#        路径#}
         <div class="img-block">
             <div style="text-align: center">
-                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="" alt="">
+{#                TODO 加键盘上下监听#}
+                <img id="ct-img" class="img" onmousemove="getCoordinates()" src="" alt="" onmouseleave="hideCoordinates()">
             </div>
 
             <span class="img-info-top" id="slice"></span>
             <span class="img-info-bot-x" id="mouse-x"></span>
             <span class="img-info-bot-y" id="mouse-y"></span>
         </div>
+        <div>
+            <input id="se-input" type="number" onchange="changeImg(this.value)" style="margin-top: 20px;">
+        </div>
     </div>
 
     <div class="div-inline right">
-        hello
-{#        TODO#}
-
-        <p class="font-color" id="test"> hello </p>
+        <div id="right_top" align="top">
+            <h1 style="margin-top: 0px;">肺部筛查报告</h1>
+        </div>
+        <div id="right_middle">
+            病人基本信息
+        </div>
+        <div id="right_bottom">
+            观察结果
+        </div>
     </div>
 
 </div>
@@ -97,11 +142,6 @@
     }
 
 </script>
-
-
-
-
-
 
 
 <script language="JavaScript" type="text/javascript">
@@ -138,7 +178,25 @@
     window.onload = init;
 
     function init() {
+        loaddata();
         changeImg(0);
+        document.onkeydown = function(event){
+            var e = event
+            if(e && e.keyCode == 37){
+                changeImg(num - 1);
+
+            }
+            if(e && e.keyCode == 39){
+                changeImg(num + 1);
+            }
+            if(e && e.keyCode == 38){
+                changeImg(num - 1);
+
+            }
+            if(e && e.keyCode == 40){
+                changeImg(num + 1);
+            }
+        }
     }
 
     function getCoordinates() {
@@ -148,8 +206,8 @@
         var x = event.clientX - document.getElementById('ct-img').getBoundingClientRect().left;
         var y = event.clientY - document.getElementById('ct-img').getBoundingClientRect().top;
 
-        xinfo.innerHTML = "x: " + Math.round(x);
-        yinfo.innerHTML = "y: " + Math.round(y);
+        xinfo.innerHTML = "x: " + Math.ceil(x);
+        yinfo.innerHTML = "y: " + Math.ceil(y);
     }
 
     function changeImg(cnt){
@@ -173,7 +231,10 @@
                     path = "{% static "" %}" + path;
                     img.src = path;
                     document.getElementById('slice').innerHTML = "se: " + cnt;
+                    document.getElementById('se-input').value = cnt;
                     num = parseInt(cnt);
+                }else {
+                    document.getElementById('se-input').value = num;
                 }
             }
         };
@@ -214,9 +275,10 @@
 
         // 请求生成图片
         // 这里把mhd文件名传进去，加载指定的mhd文件
-        xmlhttp.open("GET", "/load_img", true);
+        xmlhttp.open("GET", "/load_img?src=" + document.getElementById('mhd').value, true);
         xmlhttp.send();
 
+        document.getElementById('ct-img').src = "";
         changeImg(0);
 
         // TODO
@@ -236,14 +298,16 @@
         xmlhttp.onreadystatechange = function() {
             if(xmlhttp.readyState==4 && xmlhttp.status==200) {
                 document.getElementById('tb').innerHTML = "";
-                addNodulesList('1', '10', '1', '1');
-                addNodulesList('1', '20', '1', '1');
-                addNodulesList('1', '30', '1', '1');
+                var jsontext = xmlhttp.response;
+                var nodules = JSON.parse(jsontext)['nodules'];
+                for(var i = 0; i < nodules.length; i++) {
+                    addNodulesList(i, nodules[i]['x'], nodules[i]['y'], nodules[i]['z']);
+                }
             }
         };
         // TODO
         // 请求图片路径
-        xmlhttp.open("GET", "/load_nodules", true);
+        xmlhttp.open("GET", "/load_nodules?src=" + document.getElementById('mhd').value, true);
         xmlhttp.send();
     }
 
@@ -263,9 +327,9 @@
         coz.innerHTML = z;
 
         item.appendChild(id);
+        item.appendChild(coz);
         item.appendChild(cox);
         item.appendChild(coy);
-        item.appendChild(coz);
 
         item.className = 'default-cursor';
         item.setAttribute('onclick', 'getNodulesImage(this)');
@@ -276,11 +340,18 @@
     }
 
     function selectMhd() {
-        alert(document.getElementById('mhd').value);
+{#        alert(document.getElementById('mhd').value);#}
     }
 
     function loadMhd() {
         alert("fuck u");
+    }
+
+    function hideCoordinates() {
+        var xinfo = document.getElementById('mouse-x');
+        var yinfo = document.getElementById('mouse-y');
+        xinfo.innerHTML = "";
+        yinfo.innerHTML = "";
     }
 </script>
 
