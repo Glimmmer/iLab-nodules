@@ -19,9 +19,9 @@ def ajax_dict(request):
         mhd = request.GET['value']
         if mhd:
             mhd = mhd[:-4]
-            path = os.path.join(BASE_DIR, 'index/static/image/' + mhd + '/ct_' + str(cnt) + '.png')
+            path = os.path.join(BASE_DIR, 'index/static/image/' + mhd + '/' + request.GET['ca'] + '/ct_' + str(cnt) + '.png')
             print(path)
             if os.path.isfile(path):
-                res_json['path'] = 'image/' + mhd + '/ct_' + str(cnt) + '.png'
+                res_json['path'] = 'image/' + mhd + '/' + request.GET['ca'] + '/ct_' + str(cnt) + '.png'
 
     return JsonResponse(res_json)

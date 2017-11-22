@@ -35,10 +35,22 @@
     width: 512px;
 }
 
-.img-block{
+.img-block {
     width: 650px;
     height: 512px;
     position: relative;
+}
+
+.img-block-small {
+    width: 310px;
+    height: 250px;
+    position: relative;
+    margin-bottom: 12px;
+}
+
+.img-small {
+    width: 250px;
+    height: 250px;
 }
 
 .img-info-top{
