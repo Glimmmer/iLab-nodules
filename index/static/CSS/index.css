@@ -23,10 +23,11 @@
 
 .home .middle {
     width: 50%;
+    margin-left: 20px;
 }
 
 .home .right {
-    width: 27%;
+    width: 25%;
     /*border-left: 4px solid white;*/
     /*border-right: 4px solid white;*/
 }
