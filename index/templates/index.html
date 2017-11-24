@@ -8,7 +8,7 @@
 {#</form>#}
 
 <div class="home">
-    <div class="div-inline left" style="margin-left: 40px;">
+    <div class="div-inline left" style="margin-left: 10px;">
 {#        TODO#}
 {#        步骤信息#}
         <h1 class="font-color" style="margin-top: 0px;">
@@ -41,7 +41,7 @@
     <div style="height: 1px;"></div>
 
     <h2>可疑结节</h2>
-        <table class="table" style="text-align: left; width: 100%">
+        <table class="table" cellspacing="0" style=" text-align: left; width: 100%" >
 
             <thead>
                 <tr>
@@ -54,9 +54,9 @@
 
         </table>
 
-        <div style="overflow: auto; height: 140px;">
+        <div style="overflow: auto; height: 300px;">
 
-        <table class="table" style="text-align: left; width: 100%">
+        <table class="table" cellspacing="0" cellpadding="0"  style="text-align: left; width: 100%; border-spacing:0px 3px;">
 
             <thead>
                 <tr>
@@ -97,11 +97,11 @@
             </div>
 
             <span class="img-info-top" id="slice">se: 0</span>
-            <span class="img-info-bot-x" id="mouse-x">x:</span>
-            <span class="img-info-bot-y" id="mouse-y">y:</span>
+            <span class="img-info-bot-x" id="mouse-x"></span>
+            <span class="img-info-bot-y" id="mouse-y"></span>
         </div>
         <div>
-            <input id="se-input" type="number" onchange="changeImg(this.value)" style="margin-top: 20px;">
+{#            <input id="se-input" type="number" onchange="changeImg(this.value)" style="margin-top: 20px;">#}
         </div>
     </div>
 
@@ -115,16 +115,20 @@
 {#        <div id="right_bottom">#}
 {#            观察结果#}
 {#        </div>#}
+        <div class="img-small-block-field">
         <div class="img-block-small">
             <div style="text-align: center">
                 <img id="ct-img-x" class="img-small" src="" alt="" onmousemove="getCoordinatesX()" src="" alt="" onmouseleave="hideCoordinatesX()">
             </div>
 
             <span class="img-info-top" id="slice-x">se: 0</span>
-            <span class="img-info-bot-x" id="mouse-x-x">y:</span>
-            <span class="img-info-bot-y" id="mouse-x-y">z:</span>
+            <span class="img-info-bot-x" id="mouse-x-x"></span>
+            <span class="img-info-bot-y" id="mouse-x-y"></span>
         </div>
+        </div>
+{#        <hr style="border: 0; border-top:2px dashed gray; margin-top: 50%; margin-bottom: 50%"/>#}
 
+        <div class="img-small-block-field">
         <div class="img-block-small">
             <div style="text-align: center">
                 <img id="ct-img-y" class="img-small" src="" alt="" onmousemove="getCoordinatesY()" src="" alt="" onmouseleave="hideCoordinatesY()">
@@ -132,8 +136,9 @@
 
 
             <span class="img-info-top" id="slice-y">se: 0</span>
-            <span class="img-info-bot-x" id="mouse-y-x">z:</span>
-            <span class="img-info-bot-y" id="mouse-y-y">x:</span>
+            <span class="img-info-bot-x" id="mouse-y-x"></span>
+            <span class="img-info-bot-y" id="mouse-y-y"></span>
+        </div>
         </div>
     </div>
 
@@ -255,6 +260,7 @@
     window.onload = init;
 
     function init() {
+        document.getElementById("scroll").style.overflow = "hidden";
         loaddata();
         document.onkeydown = function(event){
             var e = event
@@ -293,8 +299,8 @@
         var x = event.clientX - document.getElementById('ct-img-x').getBoundingClientRect().left;
         var y = event.clientY - document.getElementById('ct-img-x').getBoundingClientRect().top;
 
-        xinfo.innerHTML = "x: " + Math.ceil(x);
-        yinfo.innerHTML = "y: " + Math.ceil(y);
+        xinfo.innerHTML = "y: " + Math.ceil(x);
+        yinfo.innerHTML = "z: " + Math.ceil(y);
     }
 
     function getCoordinatesY() {
@@ -304,8 +310,8 @@
         var x = event.clientX - document.getElementById('ct-img-y').getBoundingClientRect().left;
         var y = event.clientY - document.getElementById('ct-img-y').getBoundingClientRect().top;
 
-        xinfo.innerHTML = "x: " + Math.ceil(x);
-        yinfo.innerHTML = "y: " + Math.ceil(y);
+        xinfo.innerHTML = "z: " + Math.ceil(x);
+        yinfo.innerHTML = "x: " + Math.ceil(y);
     }
 
     function changeImg(cnt){
@@ -329,10 +335,10 @@
                     path = "{% static "" %}" + path;
                     img.src = path;
                     document.getElementById('slice').innerHTML = "se: " + cnt;
-                    document.getElementById('se-input').value = cnt;
+{#                    document.getElementById('se-input').value = cnt;#}
                     num = parseInt(cnt);
                 }else {
-                    document.getElementById('se-input').value = num;
+{#                    document.getElementById('se-input').value = num;#}
                 }
             }
         };
@@ -405,17 +411,24 @@
     }
 
     function getNodulesImage(obj) {
-        var cnt = obj.cells[1].innerHTML; //结节图片编号
+        var cntZ = obj.cells[1].innerHTML; //结节图片编号
+        var cntX = obj.cells[2].innerHTML; //结节图片编号
+        var cntY = obj.cells[3].innerHTML; //结节图片编号
 
-        changeImg(cnt);
+        changeImg(cntZ);
+        changeImgX(cntX);
+        changeImgY(cntY);
     }
 
     function changeColor(obj) {
-        obj.style.color = "gray";
+{#        obj.style.color = "gray";#}
+        obj.style.backgroundColor = "gray";
+
     }
 
     function resetColor(obj) {
-        obj.style.color = "white";
+{#        obj.style.color = "white";#}
+        obj.style.backgroundColor = "black";
     }
 
     function loaddata() {
@@ -462,7 +475,7 @@
                 var jsontext = xmlhttp.response;
                 var nodules = JSON.parse(jsontext)['nodules'];
                 for(var i = 0; i < nodules.length; i++) {
-                    addNodulesList(i, nodules[i]['x'], nodules[i]['y'], nodules[i]['z']);
+                    addNodulesList(i+1, nodules[i]['x'], nodules[i]['y'], nodules[i]['z']);
                 }
             }
         };
@@ -511,22 +524,22 @@
     function hideCoordinates() {
         var xinfo = document.getElementById('mouse-x');
         var yinfo = document.getElementById('mouse-y');
-        xinfo.innerHTML = "x:";
-        yinfo.innerHTML = "y:";
+        xinfo.innerHTML = "";
+        yinfo.innerHTML = "";
     }
 
     function hideCoordinatesX() {
         var xinfo = document.getElementById('mouse-x-x');
         var yinfo = document.getElementById('mouse-x-y');
-        xinfo.innerHTML = "y:";
-        yinfo.innerHTML = "z:";
+        xinfo.innerHTML = "";
+        yinfo.innerHTML = "";
     }
 
     function hideCoordinatesY() {
         var xinfo = document.getElementById('mouse-y-x');
         var yinfo = document.getElementById('mouse-y-y');
-        xinfo.innerHTML = "z:";
-        yinfo.innerHTML = "x:";
+        xinfo.innerHTML = "";
+        yinfo.innerHTML = "";
     }
 
     function refreshImg() {
